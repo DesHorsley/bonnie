@@ -13,13 +13,11 @@ namespace :bonnie do
         measure.populations.each_with_index do |population, population_index|
           patients = Record.where(user_id: measure.user_id, measure_ids: measure.hqmf_set_id)
           patients.each do |patient|
-            unless setup_exception
-              begin
-                result = calculator.calculate(measure, population_index, patient)
-                debugger
-              rescue => e
-                calculation_exception = "Measure calculation exception: #{e.message}"
-              end
+            begin
+              result = calculator.calculate(measure, population_index, patient)
+              debugger
+            rescue => e
+              calculation_exception = "Measure calculation exception: #{e.message}"
             end
           end
         end

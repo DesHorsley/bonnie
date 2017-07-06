@@ -16,6 +16,8 @@ class BonnieCqlBackendCalculator
       environment.append_path path
     end
 
+    debugger
+
     # Evaluate the minimal cql requirements to calculate cql
     @v8.eval environment['cql.js'].to_s
   end
