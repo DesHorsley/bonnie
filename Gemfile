@@ -51,9 +51,13 @@ gem 'oj' # Faster JSON
 group :test, :development, :ci do
   gem 'pry'
   gem 'teaspoon'
+  gem "overcommit"
+  gem 'rubocop'
   gem 'teaspoon-jasmine'
   gem 'simplecov', :require => false
   gem 'minitest'
+  gem 'rails_best_practices'
+  gem 'reek'
   gem 'webmock'
   gem 'vcr'
   gem 'bundler-audit'

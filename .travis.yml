@@ -4,13 +4,19 @@ rvm:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+install:
+  - npm install -g coffeelint
 services: mongodb
 bundler_args: --without test development
+before_script:
+  - git config --global user.email "travis@travis.ci"
+  - git config --global user.name "Travis CI"
+  - bundle exec overcommit --sign
 script:
+  - bundle exec brakeman -qAzw1
   - bundle exec bundle-audit check --update
-  - bundle exec brakeman -qAzw1 --no-pager
-  - export DISPLAY=:99.0 && bundle exec rake teaspoon
-  - bundle exec rake
+  - overcommit -r
+  - rake
 notifications:
   email:
     recipients:
