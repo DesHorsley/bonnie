@@ -32,6 +32,7 @@ Bonnie::Application.routes.draw do
     end
     member do
       get 'debug', defaults: { format: :html }
+      get 'download_package'
       post 'clear_cached_javascript'
     end
     resources :populations do
