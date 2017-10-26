@@ -270,10 +270,16 @@ class MeasuresController < ApplicationController
   end
 
   def download_package
-    @measure = CqlMeasure.by_user(current_user).find(BSON::ObjectId.from_string(ActionController::Base.helpers.escape_once(params[:id])))
-    raise Mongoid::Errors::DocumentNotFound.new(CqlMeasurePackage, measure_id: params[:id]) unless @measure.package
-
-    send_data @measure.package.file.data, type: :zip, filename: "#{@measure.cms_id}_#{current_user.email}_#{@measure.package.created_at.to_date.to_s}.zip"
+    @measure = CqlMeasure.by_user(current_user).where(id: params[:id]).first
+    if @measure
+      if @measure.package
+        send_data @measure.package.file.data, type: :zip, filename: "#{@measure.cms_id}_#{current_user.email}_#{@measure.package.created_at.to_date.to_s}.zip"
+      else
+        render text: 'No package found for this measure.', status: :not_found
+      end
+    else
+      render text: 'No measure found for this id.', status: :not_found
+    end
   end
 
   def clear_cached_javascript
