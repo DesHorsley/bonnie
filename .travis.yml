@@ -6,15 +6,16 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 install:
   - npm install -g coffeelint
+  - gem install overcommit
 services: mongodb
 bundler_args: --without test development
 before_script:
   - git config --global user.email "travis@travis.ci"
   - git config --global user.name "Travis CI"
-  - bundle exec overcommit --sign
 script:
   - bundle exec brakeman -qAzw1
   - bundle exec bundle-audit check --update
+  - bundle exec overcommit --sign
   - overcommit -r
   - rake
 notifications:
